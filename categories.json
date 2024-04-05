@@ -1,0 +1,49 @@
+{
+    "Groceries": [
+        "rewe",
+        "kaufland"
+    ],
+    "Eating Out (resturants, bars)": [
+        "cantinerie",
+        "doener",
+        "widynski...roick.gmbh/berlin",
+        "konditorei.junge",
+        "le.crobag.shop",
+        "espresso.house",
+        "maharaja",
+        "kantine",
+        "manju",
+        "zamar orient",
+        "levy.restaurants.gmbh/berlin",
+        "evrin.pizza.pasta/berlin",
+        "scoom.warschauer.str/berlin"
+    ],
+    "Travel (tickets, accomodation)": [
+        "flixbus",
+        "st.petri.zu.luebeck/luebeck",
+        "louisiana.star/hamburg",
+        "mav.hu",
+        "booking",
+        "bid..a.s./bratislava",
+        "zeleznicna.spolocnost/bratislava"
+    ],
+    "Other (clothes, shoes, scooter rides, misc)": [
+        "bolt",
+        "lagardere.fil..470/hamburg",
+        "amazon.de",
+        "lime.ride",
+        "swarovski",
+        "lime",
+        "snipes",
+        "blumen+pflanzen",
+        "h.amp.m",
+        "nanu nana"
+    ],
+    "Ignore": [
+        "chatgpt.subscription/httpsopenai.c",
+        "adyen n.v.",
+        "notprovided",
+        "berliner.sparkasse/650.896707",
+        "dkb ag"
+    ]
+}
