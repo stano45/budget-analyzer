@@ -3,9 +3,25 @@ import json
 from categories import read_category_data, add_item_to_category, write_categories
 
 #TODO: replace this with the path to your payments CSV file
-csv_file_path = "payments.example.csv"
+original_csv = "umsatz-mar-24.csv"
+csv_file_path = f'cleaned-{original_csv}'
+
+with open(original_csv, 'r') as file:
+    lines = file.readlines()
+
+# Check if "girokonto" is in the first line, ignoring case
+if "girokonto" in lines[0].lower():
+    # Remove the first 4 lines
+    lines = lines[4:]
+    
+    # Write the remaining lines to a new file
+    with open(csv_file_path, 'w') as file:
+        file.writelines(lines)
+else:
+    csv_file_path = original_csv
+
 budget_file_path = "budget.example.json"
-output_file_path = f"categorized-{csv_file_path}"
+output_file_path = f"categorized-{original_csv}"
 
 df_raw = pd.read_csv(csv_file_path, delimiter=';')
 df_raw["amount"] = pd.to_numeric(df_raw["Betrag (€)"].str.replace(',', '.'), errors='coerce') * -1
@@ -64,8 +80,9 @@ with open(budget_file_path, 'r') as file:
     budget = json.load(file)
 
 spent_per_category['budget'] = spent_per_category['category'].apply(lambda x: budget.get(x, 0))
+total_used_categories = len(spent_per_category['category'])
 total_rows_before_budget = len(df) + 5
-diffs = [f'=B{i}-C{i}' for i in range(total_rows_before_budget, total_rows_before_budget + 4)]
+diffs = [f'=B{i}-C{i}' for i in range(total_rows_before_budget, total_rows_before_budget + total_used_categories)]
 spent_per_category['diff'] = diffs
 
 spent_per_category = spent_per_category[['category', 'budget', 'spent', 'diff']]
