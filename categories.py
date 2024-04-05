@@ -8,7 +8,7 @@ def read_category_data():
     return data
 
 def add_item_to_category(category, item):
-    data = read_category_data(file_path)
+    data = read_category_data()
     if category in data:
         if item not in data[category]:
             data[category].append(item)

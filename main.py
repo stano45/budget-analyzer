@@ -52,15 +52,25 @@ for index, row in df.iterrows():
 df = df[df['category'] != 'Ignore'] 
 df = df.sort_values(by='category')
 
-spent_per_category = df.groupby('category')['amount'].sum().reset_index(name='spent')
+df['row_number'] = range(2, len(df) + 2)
 
+category_rows = df.groupby('category')['row_number'].agg(first='min', last='max').reset_index()
+
+df = pd.merge(df, category_rows, on='category', how='left')
+spent_per_category = df[['category', 'first', 'last']].drop_duplicates('category')
+spent_per_category['spent'] = '=SUM(B' + spent_per_category['first'].astype(str) + ':B' + spent_per_category['last'].astype(str) + ')'
 
 with open(budget_file_path, 'r') as file:
     budget = json.load(file)
 
 spent_per_category['budget'] = spent_per_category['category'].apply(lambda x: budget.get(x, 0))
-spent_per_category['difference'] = spent_per_category['budget'] - spent_per_category['spent']
+total_rows_before_budget = len(df) + 5
+diffs = [f'=B{i}-C{i}' for i in range(total_rows_before_budget, total_rows_before_budget + 4)]
+spent_per_category['diff'] = diffs
 
+spent_per_category = spent_per_category[['category', 'budget', 'spent', 'diff']]
+
+df = df.drop(columns=['row_number', 'first', 'last'])
 df.to_csv(output_file_path, index=False)
 with open(output_file_path, 'a') as f:
     f.write("\n\n")
